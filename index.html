@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>終極密碼</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding: 50px; background: #f0f4f8; }
+        .container { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        input { padding: 10px; font-size: 1.2rem; width: 80px; border: 1px solid #ddd; border-radius: 5px; }
+        button { padding: 10px 20px; font-size: 1.1rem; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>終極密碼</h1>
+        <p id="rangeText">範圍：1 ~ 100</p>
+        <input type="number" id="guessInput" placeholder="輸入數字">
+        <button onclick="checkGuess()">猜！</button>
+        <p id="message"></p>
+        <button onclick="resetGame()" style="background:#6c757d; margin-top:20px;">重新開始</button>
+    </div>
+
+    <script>
+        let min = 1, max = 100;
+        let password = Math.floor(Math.random() * 100) + 1;
+
+        function checkGuess() {
+            let guess = parseInt(document.getElementById('guessInput').value);
+            let msg = document.getElementById('message');
+            if (isNaN(guess) || guess <= min || guess >= max) {
+                msg.innerText = "請輸入範圍內的數字！";
+                return;
+            }
+            if (guess === password) {
+                msg.innerHTML = `<b style="color:red">恭喜答對！密碼就是 ${password}</b>`;
+            } else if (guess < password) {
+                min = guess;
+                updateUI("太小了！");
+            } else {
+                max = guess;
+                updateUI("太大了！");
+            }
+        }
+
+        function updateUI(hint) {
+            document.getElementById('rangeText').innerText = `範圍：${min} ~ ${max}`;
+            document.getElementById('message').innerText = hint;
+            document.getElementById('guessInput').value = "";
+        }
+
+        function resetGame() {
+            min = 1; max = 100;
+            password = Math.floor(Math.random() * 100) + 1;
+            updateUI("遊戲重置，開始猜吧！");
+        }
+    </script>
+</body>
+</html>
